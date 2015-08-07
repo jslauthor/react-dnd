@@ -24,8 +24,10 @@ const boxTarget = {
 };
 
 @DragDropContext(HTML5Backend)
-@DropTarget(ItemTypes.BOX, boxTarget, connect => ({
-  connectDropTarget: connect.dropTarget()
+@DropTarget(ItemTypes.BOX, boxTarget, (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver(),
+  canDrop: monitor.canDrop()
 }))
 export default class Container extends Component {
   static propTypes = {
@@ -57,8 +59,10 @@ export default class Container extends Component {
   }
 
   render() {
-    const { hideSourceOnDrag, connectDropTarget } = this.props;
+    const { hideSourceOnDrag, connectDropTarget, isOver, canDrop } = this.props;
     const { boxes} = this.state;
+
+    console.log("IS OVER: " + isOver + " CAN DROP: " + canDrop);
 
     return connectDropTarget(
       <div style={styles}>
